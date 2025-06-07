@@ -150,7 +150,7 @@
         });
         const data = await res.json();
         if (data.secure_url) {
-          thankYouMsg.textContent = 'Upload complete!';
+          thankYouMsg.textContent = 'Thank you! Your photo has been uploaded successfully.';
           uploadBtn.style.display = 'none';
           homeBtn.style.display = 'inline-block';
         } else {
@@ -167,6 +167,7 @@
   </script>
 </body>
 </html>
+
 
 
 
