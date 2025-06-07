@@ -40,7 +40,24 @@
       margin-bottom: 1.5rem;
     }
     input[type="file"] {
-      margin: 1rem 0;
+      display: none;
+    }
+    .custom-upload {
+      font-weight: 600;
+      background: #b40016;
+      color: #fff;
+      border: none;
+      border-radius: 40px;
+      padding: 0.75rem 2rem;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      box-shadow: 0 4px 12px rgba(180, 0, 22, 0.2);
+      margin-bottom: 1rem;
+      display: inline-block;
+    }
+    .custom-upload:hover {
+      background: #8e0012;
     }
     img {
       max-width: 100%;
@@ -73,7 +90,8 @@
 <body>
   <div class="container">
     <h1>Welcome to MACU</h1>
-    <p>We;re excited to see you at our New Account Holder Event!Share your favorite moments! Tap below to upload your photos and videos.</p>
+    <p>We're excited to see you at our New Account Holder Gala! Share your favorite moments from this special event. Tap below to upload your photos and videos.</p>
+    <label for="file-input" class="custom-upload">Choose Photo</label>
     <input type="file" id="file-input" accept="image/*">
     <img id="preview" />
     <br>
@@ -127,5 +145,6 @@
   </script>
 </body>
 </html>
+
 
 
