@@ -76,6 +76,7 @@
       cursor: pointer;
       transition: background 0.3s ease;
       box-shadow: 0 4px 12px rgba(180, 0, 22, 0.2);
+      margin-top: 1rem;
     }
     button:hover {
       background: #8e0012;
@@ -90,13 +91,14 @@
 <body>
   <div class="container">
     <h1>Welcome to MACU</h1>
-    <p>We're excited to see you at our New Account Holder Gala! Share your favorite moments from this special event. Tap below to upload your photos and videos.</p>
+    <p>Share your favorite moment from today's event. Tap below to upload your photo.</p>
     <label for="file-input" class="custom-upload">Choose Photo</label>
     <input type="file" id="file-input" accept="image/*">
     <img id="preview" />
     <br>
     <button id="upload-btn" style="display:none;">Confirm Upload</button>
     <p id="thank-you"></p>
+    <button id="home-btn" style="display:none;">Back to Start</button>
   </div>
 
   <script>
@@ -104,6 +106,7 @@
     const preview = document.getElementById('preview');
     const uploadBtn = document.getElementById('upload-btn');
     const thankYouMsg = document.getElementById('thank-you');
+    const homeBtn = document.getElementById('home-btn');
 
     let selectedFile = null;
 
@@ -115,6 +118,7 @@
         preview.style.display = 'block';
         uploadBtn.style.display = 'inline-block';
         thankYouMsg.textContent = '';
+        homeBtn.style.display = 'none';
       }
     });
 
@@ -134,7 +138,9 @@
         });
         const data = await res.json();
         if (data.secure_url) {
-          thankYouMsg.innerHTML = 'Upload complete!<br><a href="' + data.secure_url + '" target="_blank">View Uploaded Photo</a>';
+          thankYouMsg.textContent = 'Upload complete!';
+          uploadBtn.style.display = 'none';
+          homeBtn.style.display = 'inline-block';
         } else {
           thankYouMsg.textContent = 'Upload failed. Please try again.';
         }
@@ -142,9 +148,14 @@
         thankYouMsg.textContent = 'Error: ' + err.message;
       }
     });
+
+    homeBtn.addEventListener('click', () => {
+      window.location.reload();
+    });
   </script>
 </body>
 </html>
+
 
 
 
