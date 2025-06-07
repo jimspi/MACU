@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MACU New Account Holder Event</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: linear-gradient(135deg, #ffffff 0%, #f8f8f8 100%);
+      color: #2c2c2c;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 1rem;
+    }
+    .container {
+      background: #fff;
+      border: 2px solid #b40016;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(180, 0, 22, 0.1);
+      max-width: 420px;
+      width: 100%;
+      text-align: center;
+      padding: 2.5rem 2rem;
+      position: relative;
+    }
+    h1 {
+      font-size: 1.8rem;
+      color: #b40016;
+      margin-bottom: 1rem;
+    }
+    p {
+      font-size: 1rem;
+      line-height: 1.5;
+      margin-bottom: 1.75rem;
+    }
+    button {
+      font-weight: 600;
+      background: #b40016;
+      color: #fff;
+      border: none;
+      border-radius: 40px;
+      padding: 0.75rem 2rem;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      box-shadow: 0 4px 12px rgba(180, 0, 22, 0.2);
+    }
+    button:hover {
+      background: #8e0012;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Welcome to MACU</h1>
+    <p>We're excited you're at our New Account Holder Event! Share your favorite moments!</p>
+    <button id="upload_widget">Upload</button>
+  </div>
+
+  <!-- Cloudinary Upload Widget -->
+  <script src="https://widget.cloudinary.com/v2.0/global/all.js" type="text/javascript"></script>
+  <script>
+    const myWidget = cloudinary.createUploadWidget({
+      cloudName: 'dvujs7g1i', // <-- Replace this
+      uploadPreset: 'macu_upload', // <-- Replace this
+      folder: 'macu_event_rsvps',
+      maxFiles: 1,
+      sources: ['local', 'camera'],
+      multiple: false,
+      styles: {
+        palette: {
+          window: '#ffffff',
+          windowBorder: '#b40016',
+          tabIcon: '#b40016',
+          menuIcons: '#b40016',
+          textDark: '#2c2c2c',
+          textLight: '#ffffff',
+          link: '#b40016',
+          action: '#8e0012',
+          inactiveTabIcon: '#a9a9a9',
+          error: '#e53935',
+          inProgress: '#b40016',
+          complete: '#388e3c',
+          sourceBg: '#f8f8f8'
+        },
+        fonts: {
+          default: null,
+          "'Montserrat', sans-serif": {
+            url: 'https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap',
+            active: true
+          }
+        }
+      }
+    }, (error, result) => {
+      if (!error && result.event === 'success') {
+        alert('Thanks for RSVPing! Your file was uploaded.');
+        console.log('Uploaded URL:', result.info.secure_url);
+      } else if (error) {
+        alert('Upload failed: ' + error.message);
+      }
+    });
+
+    document.getElementById('upload_widget').onclick = () => myWidget.open();
+  </script>
+</body>
+</html>
