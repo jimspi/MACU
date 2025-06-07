@@ -8,6 +8,11 @@
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      height: 100%;
+      width: 100%;
+      overflow-x: hidden;
+    }
     body {
       font-family: 'Montserrat', sans-serif;
       background: linear-gradient(135deg, #ffffff 0%, #f8f8f8 100%);
@@ -92,8 +97,8 @@
   <div class="container">
     <h1>Welcome to MACU</h1>
     <p>Share your favorite moment from today's event. Tap below to upload your photo.</p>
-    <label for="file-input" class="custom-upload">Choose Photo</label>
-    <input type="file" id="file-input" accept="image/*">
+    <label for="file-input" class="custom-upload" id="trigger-upload">Choose Photo</label>
+    <input type="file" id="file-input" accept="image/*" capture="environment">
     <img id="preview" />
     <br>
     <button id="upload-btn" style="display:none;">Confirm Upload</button>
@@ -107,8 +112,15 @@
     const uploadBtn = document.getElementById('upload-btn');
     const thankYouMsg = document.getElementById('thank-you');
     const homeBtn = document.getElementById('home-btn');
+    const triggerUpload = document.getElementById('trigger-upload');
 
     let selectedFile = null;
+
+    // Force opening of file dialog on click
+    triggerUpload.addEventListener('click', function () {
+      fileInput.value = ''; // reset so same file can be selected again
+      fileInput.click();
+    });
 
     fileInput.addEventListener('change', function () {
       const file = this.files[0];
@@ -155,6 +167,7 @@
   </script>
 </body>
 </html>
+
 
 
 
