@@ -8,11 +8,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body {
-      height: 100%;
-      width: 100%;
-      overflow-x: hidden;
-    }
     body {
       font-family: 'Montserrat', sans-serif;
       background: linear-gradient(135deg, #ffffff 0%, #f8f8f8 100%);
@@ -42,33 +37,7 @@
     p {
       font-size: 1rem;
       line-height: 1.5;
-      margin-bottom: 1.5rem;
-    }
-    input[type="file"] {
-      display: none;
-    }
-    .custom-upload {
-      font-weight: 600;
-      background: #b40016;
-      color: #fff;
-      border: none;
-      border-radius: 40px;
-      padding: 0.75rem 2rem;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: background 0.3s ease;
-      box-shadow: 0 4px 12px rgba(180, 0, 22, 0.2);
-      margin-bottom: 1rem;
-      display: inline-block;
-    }
-    .custom-upload:hover {
-      background: #8e0012;
-    }
-    img {
-      max-width: 100%;
-      margin-top: 1rem;
-      display: none;
-      border-radius: 8px;
+      margin-bottom: 1.75rem;
     }
     button {
       font-weight: 600;
@@ -81,103 +50,63 @@
       cursor: pointer;
       transition: background 0.3s ease;
       box-shadow: 0 4px 12px rgba(180, 0, 22, 0.2);
-      margin-top: 1rem;
     }
     button:hover {
       background: #8e0012;
-    }
-    #thank-you {
-      margin-top: 1.5rem;
-      color: green;
-      font-weight: bold;
     }
   </style>
 </head>
 <body>
   <div class="container">
     <h1>Welcome to MACU</h1>
-    <p>Share your favorite moment from today's event. Tap below to upload your photo.</p>
-    <label for="file-input" class="custom-upload" id="trigger-upload">Choose Photo</label>
-    <input type="file" id="file-input" accept="image/*" >
-    <img id="preview" />
-    <br>
-    <button id="upload-btn" style="display:none;">Confirm Upload</button>
-    <p id="thank-you"></p>
-    <button id="home-btn" style="display:none;">Back to Start</button>
+    <p>We're excited you're at our New Account Holder Event! Share your favorite moments!</p>
+    <button id="upload_widget">Upload</button>
   </div>
 
-  <script type="module">
-    const fileInput = document.getElementById('file-input');
-    const preview = document.getElementById('preview');
-    const uploadBtn = document.getElementById('upload-btn');
-    const thankYouMsg = document.getElementById('thank-you');
-    const homeBtn = document.getElementById('home-btn');
-    const triggerUpload = document.getElementById('trigger-upload');
-
-    let selectedFile = null;
-
-    triggerUpload.addEventListener('click', function () {
-      fileInput.value = '';
-      fileInput.click();
-    });
-
-    fileInput.addEventListener('change', function () {
-      const file = this.files[0];
-      if (file && file.type.startsWith('image/')) {
-        selectedFile = file;
-        preview.src = URL.createObjectURL(file);
-        preview.style.display = 'block';
-        uploadBtn.style.display = 'inline-block';
-        thankYouMsg.textContent = '';
-        homeBtn.style.display = 'none';
-      }
-    });
-
-    uploadBtn.addEventListener('click', async () => {
-      if (!selectedFile) {
-        thankYouMsg.textContent = 'No file selected.';
-        return;
-      }
-
-      const formData = new FormData();
-      formData.append('file', selectedFile);
-      formData.append('upload_preset', 'dvujs7g1i');
-      formData.append('folder', 'macu_event');
-
-      thankYouMsg.textContent = 'Uploading...';
-
-      try {
-        const res = await fetch('https://api.cloudinary.com/v1_1/dvujs7g1i/image/upload', {
-          method: 'POST',
-          body: formData
-        });
-
-        const data = await res.json();
-        console.log('Cloudinary response:', data);
-
-        if (data.error) {
-          console.error('Cloudinary Error:', data.error.message);
-          thankYouMsg.textContent = 'Cloudinary Error: ' + data.error.message;
-        } else if (data.secure_url) {
-          thankYouMsg.textContent = 'Thank you! Your photo has been uploaded successfully.';
-          uploadBtn.style.display = 'none';
-          homeBtn.style.display = 'inline-block';
-        } else {
-          thankYouMsg.textContent = 'Upload failed. No response URL.';
+  <!-- Cloudinary Upload Widget -->
+  <script src="https://widget.cloudinary.com/v2.0/global/all.js" type="text/javascript"></script>
+  <script>
+    const myWidget = cloudinary.createUploadWidget({
+      cloudName: 'dvujs7g1i', // <-- Replace this
+      uploadPreset: 'macu_upload', // <-- Replace this
+      folder: 'macu_event_rsvps',
+      maxFiles: 1,
+      sources: ['local', 'camera'],
+      multiple: false,
+      styles: {
+        palette: {
+          window: '#ffffff',
+          windowBorder: '#b40016',
+          tabIcon: '#b40016',
+          menuIcons: '#b40016',
+          textDark: '#2c2c2c',
+          textLight: '#ffffff',
+          link: '#b40016',
+          action: '#8e0012',
+          inactiveTabIcon: '#a9a9a9',
+          error: '#e53935',
+          inProgress: '#b40016',
+          complete: '#388e3c',
+          sourceBg: '#f8f8f8'
+        },
+        fonts: {
+          default: null,
+          "'Montserrat', sans-serif": {
+            url: 'https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap',
+            active: true
+          }
         }
-
-      } catch (err) {
-        console.error('Fetch failed:', err);
-        thankYouMsg.textContent = 'Upload error: ' + err.message;
+      }
+    }, (error, result) => {
+      if (!error && result.event === 'success') {
+        alert('Thanks for RSVPing! Your file was uploaded.');
+        console.log('Uploaded URL:', result.info.secure_url);
+      } else if (error) {
+        alert('Upload failed: ' + error.message);
       }
     });
 
-    homeBtn.addEventListener('click', () => {
-      window.location.reload();
-    });
+    document.getElementById('upload_widget').onclick = () => myWidget.open();
   </script>
 </body>
 </html>
-
-
-
