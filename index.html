@@ -106,7 +106,7 @@
     <button id="home-btn" style="display:none;">Back to Start</button>
   </div>
 
-  <script>
+  <script type="module">
     const fileInput = document.getElementById('file-input');
     const preview = document.getElementById('preview');
     const uploadBtn = document.getElementById('upload-btn');
@@ -116,9 +116,8 @@
 
     let selectedFile = null;
 
-    // Force opening of file dialog on click
     triggerUpload.addEventListener('click', function () {
-      fileInput.value = ''; // reset so same file can be selected again
+      fileInput.value = '';
       fileInput.click();
     });
 
@@ -135,7 +134,10 @@
     });
 
     uploadBtn.addEventListener('click', async () => {
-      if (!selectedFile) return;
+      if (!selectedFile) {
+        thankYouMsg.textContent = 'No file selected.';
+        return;
+      }
 
       const formData = new FormData();
       formData.append('file', selectedFile);
@@ -149,17 +151,24 @@
           method: 'POST',
           body: formData
         });
+
         const data = await res.json();
-        if (data.secure_url) {
-          console.log('Upload response:', data);
+        console.log('Cloudinary response:', data);
+
+        if (data.error) {
+          console.error('Cloudinary Error:', data.error.message);
+          thankYouMsg.textContent = 'Cloudinary Error: ' + data.error.message;
+        } else if (data.secure_url) {
           thankYouMsg.textContent = 'Thank you! Your photo has been uploaded successfully.';
           uploadBtn.style.display = 'none';
           homeBtn.style.display = 'inline-block';
         } else {
-          thankYouMsg.textContent = 'Upload failed. Please try again.';
+          thankYouMsg.textContent = 'Upload failed. No response URL.';
         }
+
       } catch (err) {
-        thankYouMsg.textContent = 'Error: ' + err.message;
+        console.error('Fetch failed:', err);
+        thankYouMsg.textContent = 'Upload error: ' + err.message;
       }
     });
 
@@ -169,4 +178,5 @@
   </script>
 </body>
 </html>
+
 
