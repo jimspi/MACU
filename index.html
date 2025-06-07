@@ -54,21 +54,27 @@
     button:hover {
       background: #8e0012;
     }
+    #thank-you {
+      margin-top: 1.5rem;
+      color: green;
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
   <div class="container">
     <h1>Welcome to MACU</h1>
-    <p>We're excited you're at our New Account Holder Event! Share your favorite moments!</p>
+    <p>We're excited to see you at our New Account Holder Event! Share your favorite moments from this special event! Tap below to upload your photos.</p>
     <button id="upload_widget">Upload</button>
+    <p id="thank-you"></p>
   </div>
 
   <!-- Cloudinary Upload Widget -->
   <script src="https://widget.cloudinary.com/v2.0/global/all.js" type="text/javascript"></script>
   <script>
     const myWidget = cloudinary.createUploadWidget({
-      cloudName: 'dvujs7g1i', // <-- Replace this
-      uploadPreset: 'macu_upload', // <-- Replace this
+      cloudName: 'dvujs7g1i', // <-- Your Cloudinary cloud name
+      uploadPreset: 'macu_upload', // <-- Your unsigned upload preset
       folder: 'macu_event_rsvps',
       maxFiles: 1,
       sources: ['local', 'camera'],
@@ -99,14 +105,18 @@
       }
     }, (error, result) => {
       if (!error && result.event === 'success') {
-        alert('Thanks for sharing!');
+        document.getElementById('thank-you').textContent = 'Thanks for RSVPing! Your file was uploaded.';
         console.log('Uploaded URL:', result.info.secure_url);
       } else if (error) {
-        alert('Upload failed: ' + error.message);
+        document.getElementById('thank-you').textContent = 'Upload failed: ' + error.message;
       }
     });
 
-    document.getElementById('upload_widget').onclick = () => myWidget.open();
+    document.getElementById('upload_widget').onclick = () => {
+      document.getElementById('thank-you').textContent = '';
+      myWidget.open();
+    };
   </script>
 </body>
 </html>
+
