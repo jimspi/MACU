@@ -139,7 +139,8 @@
 
       const formData = new FormData();
       formData.append('file', selectedFile);
-      formData.append('upload_preset', 'macu_upload');
+      formData.append('upload_preset', 'macu_event');
+      formData.append('folder', 'macu_event');
 
       thankYouMsg.textContent = 'Uploading...';
 
@@ -150,6 +151,7 @@
         });
         const data = await res.json();
         if (data.secure_url) {
+          console.log('Upload response:', data);
           thankYouMsg.textContent = 'Thank you! Your photo has been uploaded successfully.';
           uploadBtn.style.display = 'none';
           homeBtn.style.display = 'inline-block';
@@ -167,10 +169,4 @@
   </script>
 </body>
 </html>
-
-
-
-
-
-
 
