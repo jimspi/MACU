@@ -99,7 +99,7 @@
       }
     }, (error, result) => {
       if (!error && result.event === 'success') {
-        alert('Thanks for RSVPing! Your file was uploaded.');
+        alert('Thanks for sharing!');
         console.log('Uploaded URL:', result.info.secure_url);
       } else if (error) {
         alert('Upload failed: ' + error.message);
