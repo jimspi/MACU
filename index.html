@@ -99,7 +99,7 @@
       }
     }, (error, result) => {
       if (!error && result.event === 'success') {
-        setTimeout(() => alert('Thanks for sharing your photo!'), 100);
+        document.querySelector('.container').innerHTML = '<h1>Thank you!</h1><p>Your photo has been uploaded successfully.</p><button onclick="location.reload()">Upload Another</button>';
         console.log('Uploaded URL:', result.info.secure_url);
       } else if (error) {
         alert('Upload failed: ' + error.message);
