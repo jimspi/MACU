@@ -67,9 +67,9 @@
   <script src="https://widget.cloudinary.com/v2.0/global/all.js" type="text/javascript"></script>
   <script>
     const myWidget = cloudinary.createUploadWidget({
-      cloudName: 'dvujs7g1i', // <-- Replace this
-      uploadPreset: 'macu_upload', // <-- Replace this
-      folder: 'macu_event_rsvps',
+      cloudName: 'dvujs7g1i',
+      uploadPreset: 'macu_upload',
+      folder: 'macu_event',
       maxFiles: 1,
       sources: ['local', 'camera'],
       multiple: false,
@@ -99,7 +99,7 @@
       }
     }, (error, result) => {
       if (!error && result.event === 'success') {
-        alert('Thanks for RSVPing! Your file was uploaded.');
+        alert('Thanks for sharing your photo!');
         console.log('Uploaded URL:', result.info.secure_url);
       } else if (error) {
         alert('Upload failed: ' + error.message);
@@ -110,3 +110,4 @@
   </script>
 </body>
 </html>
+
