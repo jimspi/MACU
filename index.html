@@ -99,7 +99,7 @@
       }
     }, (error, result) => {
       if (!error && result.event === 'success') {
-        alert('Thanks for sharing your photo!');
+        setTimeout(() => alert('Thanks for sharing your photo!'), 100);
         console.log('Uploaded URL:', result.info.secure_url);
       } else if (error) {
         alert('Upload failed: ' + error.message);
